@@ -13,33 +13,39 @@ class Cell {
 }
 
 const gameBoard = function () {
-  const columns = 10;
-  const rows = 10;
-
   return {
     gameBoard: [],
+
     initializeBoard() {
+      const columns = 10;
+      const rows = 10;
+      this.gameBoard = [];
       for (let i = 0; i < rows; i++) {
-        gameBoard[i] = [];
+        this.gameBoard[i] = [];
         for (let j = 0; j < columns; j++) {
           const cell = new Cell(i, j);
-          gameBoard[i][j] = cell;
+          this.gameBoard[i][j] = cell;
         }
       }
     },
 
     printBoard() {
-      console.log(gameBoard);
+      console.log(this.gameBoard);
+    },
+
+    printCell(x, y) {
+      return JSON.stringify(gameBoard[x][y]);
     },
 
     placeShip(x, y) {
-      gameBoard[x][y].hasShip = true;
+      this.gameBoard[x][y].hasShip = true;
     },
   };
 };
 
 const test = gameBoard();
 test.initializeBoard();
-test.printBoard();
+test.placeShip(5, 5);
+test.printCell(5, 5);
 
 module.exports = gameBoard;

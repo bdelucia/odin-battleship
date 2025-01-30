@@ -1,4 +1,4 @@
-const ship = require('../modules/ship');
+const ship = require('../modules/ship.js');
 
 test('hit function', () => {
   let player = ship();
