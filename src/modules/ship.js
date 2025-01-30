@@ -14,3 +14,4 @@ const ship = function (length) {
     },
   };
 };
+module.exports = ship;
