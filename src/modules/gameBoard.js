@@ -15,11 +15,31 @@ class Cell {
 const gameBoard = function () {
   const columns = 10;
   const rows = 10;
-  const gameBoard = Array.from(Array(rows), () => new Array(columns).fill(0));
+
   return {
-    placeShip(x, y, ship) {
-      gameBoard[x][y].push(ship);
+    gameBoard: [],
+    initializeBoard() {
+      for (let i = 0; i < rows; i++) {
+        gameBoard[i] = [];
+        for (let j = 0; j < columns; j++) {
+          const cell = new Cell(i, j);
+          gameBoard[i][j] = cell;
+        }
+      }
+    },
+
+    printBoard() {
+      console.log(gameBoard);
+    },
+
+    placeShip(x, y) {
+      gameBoard[x][y].hasShip = true;
     },
   };
 };
-module.exports(gameBoard);
+
+const test = gameBoard();
+test.initializeBoard();
+test.printBoard();
+
+module.exports = gameBoard;
