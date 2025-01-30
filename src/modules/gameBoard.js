@@ -34,7 +34,7 @@ const gameBoard = function () {
     },
 
     printCell(x, y) {
-      return JSON.stringify(gameBoard[x][y]);
+      return JSON.stringify(this.gameBoard[x][y]);
     },
 
     placeShip(x, y) {
@@ -42,10 +42,5 @@ const gameBoard = function () {
     },
   };
 };
-
-const test = gameBoard();
-test.initializeBoard();
-test.placeShip(5, 5);
-test.printCell(5, 5);
 
 module.exports = gameBoard;
