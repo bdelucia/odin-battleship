@@ -40,6 +40,12 @@ const gameBoard = function () {
     placeShip(x, y) {
       this.gameBoard[x][y].hasShip = true;
     },
+
+    // TODO
+    receiveAttack(x, y) {
+      if (this.gameBoard[x][y].hasShip) {
+      }
+    },
   };
 };
 
