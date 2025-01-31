@@ -15,7 +15,7 @@ class Cell {
 const gameBoard = function () {
   return {
     gameBoard: [],
-
+    missedShots: [],
     initializeBoard() {
       const columns = 10;
       const rows = 10;
@@ -44,6 +44,8 @@ const gameBoard = function () {
     // TODO
     receiveAttack(x, y) {
       if (this.gameBoard[x][y].hasShip) {
+      } else {
+        this.missedShots.push([x, y]);
       }
     },
   };
