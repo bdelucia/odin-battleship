@@ -1,0 +1,18 @@
+#player1board,
+#player2board {
+  display: grid;
+  grid-template-columns: repeat(1fr, 10);
+  grid-template-rows: repeat(1fr, 10);
+  gap: 2px;
+  width: fit-content;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+}
