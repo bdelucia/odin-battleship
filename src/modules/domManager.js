@@ -44,11 +44,18 @@ function renderPlayerBoard(player, boardElement, isHuman) {
       cell.style.display = 'flex';
       cell.style.alignItems = 'center';
       cell.style.justifyContent = 'center';
-      cell.style.backgroundColor =
-        player.gameBoard.getCell(x, y).hasShip &&
-        player.gameBoard.getCell(x, y).attackMissed === null
-          ? 'gray'
-          : 'lightblue';
+
+      const boardCell = player.gameBoard.getCell(x, y);
+
+      if (boardCell.hasShip && boardCell.attackMissed === null) {
+        cell.style.backgroundColor = 'grey';
+      } else if (boardCell.hasShip && boardCell.attackMissed === false) {
+        cell.style.backgroundColor = 'red';
+      } else if (!boardCell.hasShip && boardCell.attackMissed === null) {
+        cell.style.backgroundColor = 'lightblue';
+      } else if (!boardCell.hasShip && boardCell.attackMissed === true) {
+        cell.style.backgroundColor = 'blue';
+      }
 
       // Attach event listener if it’s a human player’s board
       if (isHuman) {
