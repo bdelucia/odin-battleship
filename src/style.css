@@ -7,6 +7,12 @@
   width: fit-content;
 }
 
+#boardsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
 .cell {
   width: 50px;
   height: 50px;
