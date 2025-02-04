@@ -47,13 +47,17 @@ function renderPlayerBoard(player, boardElement, isHuman) {
 
       const boardCell = player.gameBoard.getCell(x, y);
 
-      if (boardCell.hasShip && boardCell.attackMissed === null) {
+      if (boardCell.hasShip && boardCell.attackMissed === null && isHuman) {
+        // cell has a ship that hasn't been hit yet
         cell.style.backgroundColor = 'grey';
       } else if (boardCell.hasShip && boardCell.attackMissed === false) {
+        // cell has a ship that has been hit
         cell.style.backgroundColor = 'red';
       } else if (!boardCell.hasShip && boardCell.attackMissed === null) {
+        // cell doesn't have a ship, hit attempt hasn't been made
         cell.style.backgroundColor = 'lightblue';
       } else if (!boardCell.hasShip && boardCell.attackMissed === true) {
+        // cell doesn't have a ship, hit attempt has been made
         cell.style.backgroundColor = 'blue';
       }
 
