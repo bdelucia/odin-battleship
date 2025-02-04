@@ -14,7 +14,7 @@ class HumanPlayer {
 
   makeMove(x, y, opponent) {
     console.log(`${this.name} is attacking (${x}, ${y})`);
-    opponent.gameBoard.receiveAttack(x, y);
+    opponent.gameBoard.receiveAttack(x, y, true);
   }
 }
 
@@ -30,6 +30,6 @@ class ComputerPlayer {
     const x = Math.floor(Math.random() * 10);
     const y = Math.floor(Math.random() * 10);
     console.log(`Computer is attacking (${x}, ${y})`);
-    opponent.gameBoard.receiveAttack(x, y);
+    opponent.gameBoard.receiveAttack(x, y, false);
   }
 }

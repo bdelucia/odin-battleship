@@ -3,6 +3,8 @@ import { createPlayer } from './player.js';
 
 const player1board = document.getElementById('player1board');
 const player2board = document.getElementById('player2board');
+
+export const isPlayer1sTurn = true;
 const player1 = createPlayer('human', 'Player 1');
 const player2 = createPlayer('cpu');
 
@@ -68,9 +70,6 @@ function renderPlayerBoard(player, boardElement, isHuman) {
           player1.makeMove(x, y, player2);
           renderPlayerBoard(player2, player2board, false);
         });
-      } else {
-        player2.makeMove(player1);
-        renderPlayerBoard(player1, player1board, true);
       }
 
       boardElement.appendChild(cell);

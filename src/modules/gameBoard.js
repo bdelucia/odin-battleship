@@ -43,15 +43,17 @@ export function gameBoard() {
       this.gameBoard[x][y].hasShip = true;
     },
 
-    receiveAttack(x, y) {
-      const cellIdP2 = `p2-${x}${y}`;
-      const cellIdP1 = `p1-${x}${y}`;
-
-      const attackedCell = document.getElementById(cellIdP1);
-
-      if (!attackedCell) {
-        attackedCell = document.getElementById(cellIdP2);
+    // player recieves an attack at their x,y
+    receiveAttack(x, y, attackerIsHuman) {
+      let cellId;
+      if (attackerIsHuman) {
+        cellId = `p2-${x}${y}`;
+      } else {
+        cellId = `p1-${x}${y}`;
       }
+
+      const attackedCell = document.getElementById(cellId);
+
       const cell = this.getCell(x, y);
       if (this.gameBoard[x][y].hasShip) {
         attackedCell.style.backgroundColor = 'red';
