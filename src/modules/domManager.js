@@ -1,3 +1,20 @@
+import { gameBoard } from './gameBoard.js';
+import { createPlayer } from './player.js';
+
+const player1board = document.getElementById('player1board');
+const player2board = document.getElementById('player2board');
+
+export function domInitialize() {
+  const player1 = createPlayer('human', 'Player 1');
+  const player2 = createPlayer('cpu');
+
+  player1.gameBoard.initializeBoard();
+  player2.gameBoard.initializeBoard();
+
+  renderPlayerBoard(player1, player1board);
+  renderPlayerBoard(player2, player2board);
+}
+
 function renderPlayerBoard(playerBoard, boardElement) {
   boardElement.innerHTML = '';
 
@@ -18,7 +35,7 @@ function renderPlayerBoard(playerBoard, boardElement) {
       cell.style.display = 'flex';
       cell.style.alignItems = 'center';
       cell.style.justifyContent = 'center';
-      cell.style.backgroundColor = playerBoard.gameBoard[x][y].hasShip
+      cell.style.backgroundColor = playerBoard.gameBoard.gameBoard[x][y].hasShip
         ? 'gray'
         : 'lightblue';
 

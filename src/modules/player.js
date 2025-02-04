@@ -1,4 +1,4 @@
-const gameBoard = require('./gameBoard');
+import { gameBoard } from './gameBoard.js';
 
 export function createPlayer(type, name) {
   return type === 'human' ? new HumanPlayer(name) : new ComputerPlayer();
@@ -33,4 +33,3 @@ class ComputerPlayer {
     opponent.gameBoard.receiveAttack(x, y);
   }
 }
-module.exports = createPlayer;

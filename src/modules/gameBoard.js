@@ -12,7 +12,7 @@ class Cell {
   }
 }
 
-const gameBoard = function () {
+export function gameBoard() {
   return {
     gameBoard: [],
     missedShots: [],
@@ -41,7 +41,6 @@ const gameBoard = function () {
       this.gameBoard[x][y].hasShip = true;
     },
 
-    // TODO
     receiveAttack(x, y) {
       if (this.gameBoard[x][y].hasShip) {
       } else {
@@ -49,6 +48,4 @@ const gameBoard = function () {
       }
     },
   };
-};
-
-module.exports = gameBoard;
+}

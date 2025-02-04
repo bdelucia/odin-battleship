@@ -1,4 +1,4 @@
-const ship = function (length) {
+export const ship = function (length) {
   return {
     length: length,
     timesHit: 0,
@@ -20,4 +20,3 @@ const ship = function (length) {
     },
   };
 };
-module.exports = ship;
