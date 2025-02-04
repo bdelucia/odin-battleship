@@ -44,8 +44,14 @@ export function gameBoard() {
     },
 
     receiveAttack(x, y) {
-      const cellId = `p2-${x}${y}`;
-      const attackedCell = document.getElementById(cellId);
+      const cellIdP2 = `p2-${x}${y}`;
+      const cellIdP1 = `p1-${x}${y}`;
+
+      const attackedCell = document.getElementById(cellIdP1);
+
+      if (!attackedCell) {
+        attackedCell = document.getElementById(cellIdP2);
+      }
       const cell = this.getCell(x, y);
       if (this.gameBoard[x][y].hasShip) {
         attackedCell.style.backgroundColor = 'red';

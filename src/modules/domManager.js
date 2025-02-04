@@ -68,6 +68,9 @@ function renderPlayerBoard(player, boardElement, isHuman) {
           player1.makeMove(x, y, player2);
           renderPlayerBoard(player2, player2board, false);
         });
+      } else {
+        player2.makeMove(player1);
+        renderPlayerBoard(player1, player1board, true);
       }
 
       boardElement.appendChild(cell);
