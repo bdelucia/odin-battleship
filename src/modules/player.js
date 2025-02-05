@@ -24,12 +24,18 @@ class ComputerPlayer {
     this.type = 'computer';
     this.gameBoard = gameBoard();
     this.gameBoard.initializeBoard();
+    this.previousMoves = new Set();
   }
 
   makeMove(opponent) {
-    const x = Math.floor(Math.random() * 10);
-    const y = Math.floor(Math.random() * 10);
+    let x, y;
+    do {
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
+    } while (this.previousMoves.has(`${x},${y}`));
+
     console.log(`Computer is attacking (${x}, ${y})`);
+    this.previousMoves.add(`${x},${y}`);
     opponent.gameBoard.receiveAttack(x, y, false);
   }
 }
