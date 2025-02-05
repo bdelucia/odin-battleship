@@ -1,16 +1,37 @@
+* {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  box-sizing: border-box;
+}
+
 #player1board,
 #player2board {
   display: grid;
   grid-template-columns: repeat(1fr, 10);
   grid-template-rows: repeat(1fr, 10);
-  gap: 2px;
   width: fit-content;
 }
 
-#boardsContainer {
+#player1container {
+  display: flex;
+  flex-direction: column;
+}
+
+#player1name {
+  flex: 1;
+  min-width: 0;
+}
+
+#boardsContainer,
+#namesContainer {
   display: flex;
   justify-content: center;
   gap: 20px;
+}
+
+#namesContainer {
+  justify-content: center;
+  align-items: center;
 }
 
 .cell {

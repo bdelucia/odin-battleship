@@ -39,8 +39,8 @@ function renderPlayerBoard(player, boardElement, isHuman) {
       const cell = document.createElement('div');
       cell.id = `${isHuman ? 'p1' : 'p2'}-${x}${y}`;
       cell.classList.add('cell');
-      cell.style.width = '40px';
-      cell.style.height = '40px';
+      cell.style.width = '50px';
+      cell.style.height = '50px';
       cell.style.border = '1px solid black';
       cell.style.display = 'flex';
       cell.style.alignItems = 'center';
