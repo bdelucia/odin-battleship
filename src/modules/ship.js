@@ -11,7 +11,7 @@ export const ship = function (length) {
 
     // TODO
     takeUpSpace(x, y) {
-      this.spacesTakenUp.push([x, y]);
+      this.spacesTakenUp.push(`${x},${y}`);
     },
 
     isSunk() {

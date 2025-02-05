@@ -4,29 +4,16 @@ import { createPlayer } from './player.js';
 const player1board = document.getElementById('player1board');
 const player2board = document.getElementById('player2board');
 
-const player1 = createPlayer('human', 'Player 1');
-const player2 = createPlayer('cpu');
+export const player1 = createPlayer('human', 'Player 1');
+export const player2 = createPlayer('cpu');
 
 export function domInitialize() {
-  player1.gameBoard.initializeBoard();
-  player2.gameBoard.initializeBoard();
-
-  player1.gameBoard.placeShip(1, 1);
-  player1.gameBoard.placeShip(1, 2);
-  player1.gameBoard.placeShip(1, 3);
-  player1.gameBoard.placeShip(1, 4);
-
-  player2.gameBoard.placeShip(4, 1);
-  player2.gameBoard.placeShip(3, 1);
-  player2.gameBoard.placeShip(2, 1);
-  player2.gameBoard.placeShip(1, 1);
-
   renderPlayerBoard(player1, player1board, true);
   renderPlayerBoard(player2, player2board, false);
 }
 
 // renders the player's board in HTML
-function renderPlayerBoard(player, boardElement, isHuman) {
+export function renderPlayerBoard(player, boardElement, isHuman) {
   boardElement.innerHTML = ''; // Clear previous content
 
   const boardSize = 10;
@@ -82,15 +69,15 @@ function renderPlayerBoard(player, boardElement, isHuman) {
       // Attach event listener if it’s a human player’s board
       if (isHuman) {
         cell.addEventListener('click', () => {
-          console.log(`Clicked on (${x}, ${y})`);
-
-          player1.makeMove(x, y, player2);
+          const moveWasValid = player1.makeMove(x, y, player2);
           renderPlayerBoard(player2, player2board, false);
 
-          setTimeout(() => {
-            player2.makeMove(player1);
-            renderPlayerBoard(player1, player1board, true);
-          }, 1000);
+          if (moveWasValid) {
+            setTimeout(() => {
+              player2.makeMove(player1);
+              renderPlayerBoard(player1, player1board, true);
+            }, 1000);
+          }
         });
       }
 

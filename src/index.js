@@ -1,4 +1,4 @@
 import './style.css';
-import { domInitialize } from './modules/domManager.js';
+import { playGame } from './modules/gameManager.js';
 
-domInitialize();
+playGame();

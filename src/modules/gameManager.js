@@ -1,6 +1,9 @@
+import { domInitialize } from './domManager.js';
+import { placeShips } from './placeShips.js';
+
 export const isPlayer1sTurn = true;
 
-function playGame() {
-  if (isPlayer1sTurn) {
-  }
+export function playGame() {
+  domInitialize(); // renders the boards for the first time
+  placeShips();
 }

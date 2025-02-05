@@ -31,9 +31,10 @@ class HumanPlayer extends Player {
   makeMove(x, y, opponent) {
     if (!this.trackMove(x, y)) {
       alert(`Already attacked at ${x},${y}`);
-      return;
+      return false;
     }
     opponent.gameBoard.receiveAttack(x, y, true);
+    return true;
   }
 }
 
