@@ -29,18 +29,18 @@ function renderPlayerBoard(player, boardElement, isHuman) {
   boardElement.innerHTML = ''; // Clear previous content
 
   const boardSize = 10;
+  const cellSize = 50;
   boardElement.style.display = 'grid';
-  boardElement.style.gridTemplateColumns = `repeat(${boardSize}, 40px)`;
-  boardElement.style.gridTemplateRows = `repeat(${boardSize}, 40px)`;
-  boardElement.style.gap = '2px';
+  boardElement.style.gridTemplateColumns = `repeat(${boardSize}, ${cellSize}px)`;
+  boardElement.style.gridTemplateRows = `repeat(${boardSize}, ${cellSize}px)`;
 
   for (let x = 0; x < boardSize; x++) {
     for (let y = 0; y < boardSize; y++) {
       const cell = document.createElement('div');
       cell.id = `${isHuman ? 'p1' : 'p2'}-${x}${y}`;
       cell.classList.add('cell');
-      cell.style.width = '50px';
-      cell.style.height = '50px';
+      cell.style.width = `${cellSize}px`;
+      cell.style.height = `${cellSize}px`;
       cell.style.border = '1px solid black';
       cell.style.display = 'flex';
       cell.style.alignItems = 'center';
@@ -48,19 +48,34 @@ function renderPlayerBoard(player, boardElement, isHuman) {
 
       const boardCell = player.gameBoard.getCell(x, y);
 
+      let originalColor;
+
       if (boardCell.hasShip && boardCell.attackMissed === null && isHuman) {
-        // cell has a ship that hasn't been hit yet
-        cell.style.backgroundColor = 'grey';
+        originalColor = 'grey';
+        cell.style.backgroundColor = originalColor;
       } else if (boardCell.hasShip && boardCell.attackMissed === false) {
-        // cell has a ship that has been hit
-        cell.style.backgroundColor = 'red';
+        originalColor = 'red';
+        cell.style.backgroundColor = originalColor;
       } else if (!boardCell.hasShip && boardCell.attackMissed === null) {
-        // cell doesn't have a ship, hit attempt hasn't been made
-        cell.style.backgroundColor = 'lightblue';
+        originalColor = 'lightblue';
+        cell.style.backgroundColor = originalColor;
       } else if (!boardCell.hasShip && boardCell.attackMissed === true) {
-        // cell doesn't have a ship, hit attempt has been made
-        cell.style.backgroundColor = 'blue';
+        originalColor = 'blue';
+        cell.style.backgroundColor = originalColor;
+      } else if (boardCell.hasShip && boardCell.attackMissed === null) {
+        originalColor = 'lightblue';
+        cell.style.backgroundColor = originalColor;
       }
+
+      cell.addEventListener('mouseenter', () => {
+        cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)'; // Light hover effect
+        cell.style.cursor = 'pointer';
+      });
+
+      cell.addEventListener('mouseleave', () => {
+        cell.style.backgroundColor = originalColor;
+        cell.style.cursor = 'default';
+      });
 
       // Attach event listener if it’s a human player’s board
       if (isHuman) {

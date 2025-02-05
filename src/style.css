@@ -7,19 +7,17 @@
 #player1board,
 #player2board {
   display: grid;
-  grid-template-columns: repeat(1fr, 10);
-  grid-template-rows: repeat(1fr, 10);
-  width: fit-content;
+  grid-template-columns: repeat(1fr, 50px);
+  grid-template-rows: repeat(1fr, 50px);
+  max-width: 500px;
+  max-height: 500px;
+  width: 100%;
+  height: 100%;
 }
 
 #player1container {
   display: flex;
   flex-direction: column;
-}
-
-#player1name {
-  flex: 1;
-  min-width: 0;
 }
 
 #boardsContainer,
