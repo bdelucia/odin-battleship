@@ -25,6 +25,7 @@ export function domInitialize() {
   renderPlayerBoard(player2, player2board, false);
 }
 
+// renders the player's board in HTML
 function renderPlayerBoard(player, boardElement, isHuman) {
   boardElement.innerHTML = ''; // Clear previous content
 
@@ -34,7 +35,9 @@ function renderPlayerBoard(player, boardElement, isHuman) {
   boardElement.style.gridTemplateColumns = `repeat(${boardSize}, ${cellSize}px)`;
   boardElement.style.gridTemplateRows = `repeat(${boardSize}, ${cellSize}px)`;
 
+  // returns cell color based off boardCell conditions
   function getCellColor(boardCell, isHuman) {
+    // only display ships on the human board
     if (boardCell.hasShip && boardCell.attackMissed === null && isHuman) {
       return 'grey';
     } else if (boardCell.hasShip && boardCell.attackMissed === false) {
@@ -53,21 +56,15 @@ function renderPlayerBoard(player, boardElement, isHuman) {
       const cell = document.createElement('div');
       cell.id = `${isHuman ? 'p1' : 'p2'}-${x}${y}`;
       cell.classList.add('cell');
-      cell.style.width = `${cellSize}px`;
-      cell.style.height = `${cellSize}px`;
-      cell.style.border = '1px solid black';
-      cell.style.display = 'flex';
-      cell.style.alignItems = 'center';
-      cell.style.justifyContent = 'center';
 
       const boardCell = player.gameBoard.getCell(x, y);
       cell.style.backgroundColor = getCellColor(boardCell, isHuman);
 
       cell.addEventListener('mouseenter', () => {
         const player2cell = document.getElementById(`p2-${x}${y}`);
-        cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)'; // Light hover effect
+        cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
         cell.style.cursor = 'pointer';
-        player2cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)'; // Light hover effect
+        player2cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
         player2cell.style.cursor = 'pointer';
       });
 

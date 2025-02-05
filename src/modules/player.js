@@ -4,27 +4,42 @@ export function createPlayer(type, name) {
   return type === 'human' ? new HumanPlayer(name) : new ComputerPlayer();
 }
 
-class HumanPlayer {
-  constructor(name) {
+class Player {
+  constructor(type, name) {
+    this.type = type;
     this.name = name;
-    this.type = 'human';
     this.gameBoard = gameBoard();
     this.gameBoard.initializeBoard();
+    this.previousMoves = new Set();
+  }
+
+  // returns false if move has already been made at coords
+  trackMove(x, y) {
+    if (this.previousMoves.has(`${x},${y}`)) {
+      return false;
+    }
+    this.previousMoves.add(`${x},${y}`);
+    return true;
+  }
+}
+
+class HumanPlayer extends Player {
+  constructor(name) {
+    super('human', name);
   }
 
   makeMove(x, y, opponent) {
-    console.log(`${this.name} is attacking (${x}, ${y})`);
+    if (!this.trackMove(x, y)) {
+      alert(`Already attacked at ${x},${y}`);
+      return;
+    }
     opponent.gameBoard.receiveAttack(x, y, true);
   }
 }
 
-class ComputerPlayer {
+class ComputerPlayer extends Player {
   constructor() {
-    this.name = 'AI';
-    this.type = 'computer';
-    this.gameBoard = gameBoard();
-    this.gameBoard.initializeBoard();
-    this.previousMoves = new Set();
+    super('computer', 'Chat Gippity');
   }
 
   makeMove(opponent) {
@@ -32,10 +47,7 @@ class ComputerPlayer {
     do {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
-    } while (this.previousMoves.has(`${x},${y}`));
-
-    console.log(`Computer is attacking (${x}, ${y})`);
-    this.previousMoves.add(`${x},${y}`);
+    } while (!this.trackMove(x, y));
     opponent.gameBoard.receiveAttack(x, y, false);
   }
 }
