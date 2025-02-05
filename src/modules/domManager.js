@@ -34,6 +34,20 @@ function renderPlayerBoard(player, boardElement, isHuman) {
   boardElement.style.gridTemplateColumns = `repeat(${boardSize}, ${cellSize}px)`;
   boardElement.style.gridTemplateRows = `repeat(${boardSize}, ${cellSize}px)`;
 
+  function getCellColor(boardCell, isHuman) {
+    if (boardCell.hasShip && boardCell.attackMissed === null && isHuman) {
+      return 'grey';
+    } else if (boardCell.hasShip && boardCell.attackMissed === false) {
+      return 'red';
+    } else if (!boardCell.hasShip && boardCell.attackMissed === null) {
+      return 'lightblue';
+    } else if (!boardCell.hasShip && boardCell.attackMissed === true) {
+      return 'blue';
+    } else if (boardCell.hasShip && boardCell.attackMissed === null) {
+      return 'lightblue';
+    }
+  }
+
   for (let x = 0; x < boardSize; x++) {
     for (let y = 0; y < boardSize; y++) {
       const cell = document.createElement('div');
@@ -47,34 +61,25 @@ function renderPlayerBoard(player, boardElement, isHuman) {
       cell.style.justifyContent = 'center';
 
       const boardCell = player.gameBoard.getCell(x, y);
-
-      let originalColor;
-
-      if (boardCell.hasShip && boardCell.attackMissed === null && isHuman) {
-        originalColor = 'grey';
-        cell.style.backgroundColor = originalColor;
-      } else if (boardCell.hasShip && boardCell.attackMissed === false) {
-        originalColor = 'red';
-        cell.style.backgroundColor = originalColor;
-      } else if (!boardCell.hasShip && boardCell.attackMissed === null) {
-        originalColor = 'lightblue';
-        cell.style.backgroundColor = originalColor;
-      } else if (!boardCell.hasShip && boardCell.attackMissed === true) {
-        originalColor = 'blue';
-        cell.style.backgroundColor = originalColor;
-      } else if (boardCell.hasShip && boardCell.attackMissed === null) {
-        originalColor = 'lightblue';
-        cell.style.backgroundColor = originalColor;
-      }
+      cell.style.backgroundColor = getCellColor(boardCell, isHuman);
 
       cell.addEventListener('mouseenter', () => {
+        const player2cell = document.getElementById(`p2-${x}${y}`);
         cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)'; // Light hover effect
         cell.style.cursor = 'pointer';
+        player2cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)'; // Light hover effect
+        player2cell.style.cursor = 'pointer';
       });
 
       cell.addEventListener('mouseleave', () => {
-        cell.style.backgroundColor = originalColor;
-        cell.style.cursor = 'default';
+        const player2cell = document.getElementById(`p2-${x}${y}`);
+        if (player2cell) {
+          const p2BoardCell = player2.gameBoard.getCell(x, y);
+          cell.style.backgroundColor = getCellColor(boardCell, isHuman);
+          cell.style.cursor = 'default';
+          player2cell.style.backgroundColor = getCellColor(p2BoardCell, false);
+          player2cell.style.cursor = 'default';
+        }
       });
 
       // Attach event listener if it’s a human player’s board
