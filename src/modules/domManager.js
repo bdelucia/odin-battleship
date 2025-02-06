@@ -50,7 +50,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
 
     console.log(`${player1.name} total # of hits: ${totalHits1}`);
     console.log(`${player2.name} total # of hits: ${totalHits2}`);
-    
+
     if (totalHits1 >= 17) {
       alert(`${player2.name} has won!`);
       return true;
@@ -98,24 +98,22 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
       });
 
       // Attach event listener if it’s a human player’s board
-      if (isHuman) {
-        cell.addEventListener('click', () => {
-          const randomButton = document.getElementById('randomizeButton');
-          if (randomButton) {
-            randomButton.remove();
-          }
-          const moveWasValid = player1.makeMove(x, y, player2);
-          renderPlayerBoard(player2, player2board, false);
+      cell.addEventListener('click', () => {
+        const randomButton = document.getElementById('randomizeButton');
+        if (randomButton) {
+          randomButton.remove();
+        }
+        const moveWasValid = player1.makeMove(x, y, player2);
+        renderPlayerBoard(player2, player2board, false);
 
-          if (moveWasValid) {
-            setTimeout(() => {
-              player2.makeMove(player1);
-              renderPlayerBoard(player1, player1board, true);
-              checkIfGameWon(player1, player2);
-            }, 1000);
-          }
-        });
-      }
+        if (moveWasValid) {
+          setTimeout(() => {
+            player2.makeMove(player1);
+            renderPlayerBoard(player1, player1board, true);
+            checkIfGameWon(player1, player2);
+          }, 500);
+        }
+      });
 
       boardElement.appendChild(cell);
     }
