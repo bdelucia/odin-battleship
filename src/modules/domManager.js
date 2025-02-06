@@ -1,5 +1,7 @@
 import { gameBoard } from './gameBoard.js';
 import { createPlayer } from './player.js';
+import { convertToRGBA } from './helperFunctions.js';
+import { placeShips } from './placeShips.js';
 
 const player1board = document.getElementById('player1board');
 const player2board = document.getElementById('player2board');
@@ -8,8 +10,74 @@ export const player1 = createPlayer('human', 'Player 1');
 export const player2 = createPlayer('cpu');
 
 export function domInitialize() {
+  const randomizeButton = document.getElementById('randomizeButton');
+  randomizeButton.addEventListener('click', () => {
+    player1.gameBoard.initializeBoard();
+    placeShips(player1);
+  });
+  const nameInput = document.getElementById('player1name');
+  if (nameInput) {
+    nameInput.value = '';
+  }
   renderPlayerBoard(player1, player1board, true);
   renderPlayerBoard(player2, player2board, false);
+}
+
+export function nameInputHandler() {
+  const submitBtn = document.getElementById('submitName');
+  const player1nameInput = document.getElementById('player1name');
+  const player1nameContainer = document.getElementById('player1nameContainer');
+
+  function submitBtnEventHandler(
+    submitBtn,
+    player1nameInput,
+    player1nameContainer,
+    player1,
+  ) {
+    const inputValue = player1nameInput.value.trim();
+    if (inputValue !== '') {
+      // Create label div
+      const player1nameLabel = document.createElement('div');
+      player1nameLabel.id = 'player1nameLabel';
+      player1nameLabel.textContent = inputValue;
+
+      player1.name = inputValue;
+
+      // Remove input and button, add label
+      submitBtn.remove();
+      player1nameInput.remove();
+      player1nameContainer.appendChild(player1nameLabel);
+    }
+  }
+
+  // if user is able to type their name
+  if (submitBtn && player1nameInput && player1nameContainer) {
+    submitBtn.addEventListener('click', () => {
+      submitBtnEventHandler(
+        submitBtn,
+        player1nameInput,
+        player1nameContainer,
+        player1,
+      );
+    });
+  } else {
+    const player1nameLabel = document.getElementById('player1nameLabel');
+    player1nameLabel.remove();
+
+    const newPlayer1Input = document.createElement('input');
+    newPlayer1Input.id = 'player1name';
+    newPlayer1Input.placeholder = 'Type your name here... again...';
+
+    const newSubmitBtn = document.createElement('button');
+    newSubmitBtn.addEventListener('click', () => {
+      submitBtnEventHandler(
+        newSubmitBtn,
+        newPlayer1Input,
+        player1nameContainer,
+        player1,
+      );
+    });
+  }
 }
 
 // renders the player's board in HTML
@@ -70,36 +138,37 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
 
       const boardCell = player.gameBoard.getCell(x, y);
       let cellColor = getCellColor(boardCell, isHuman);
+      let cellColorHover = convertToRGBA(cellColor, 0.6);
       cell.style.backgroundColor = cellColor;
-
-      cell.addEventListener('mouseenter', () => {
-        const player2cell = document.getElementById(`p2-${x}${y}`);
-        cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
-        cell.style.cursor = 'pointer';
-        if (player2cell) {
-          player2cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
-          player2cell.style.cursor = 'pointer';
-        }
-      });
-
-      cell.addEventListener('mouseleave', () => {
-        const player2cell = document.getElementById(`p2-${x}${y}`);
-        if (player2cell) {
-          const p2BoardCell = player2.gameBoard.getCell(x, y);
-          cell.style.backgroundColor = getCellColor(boardCell, isHuman);
-          cell.style.cursor = 'default';
-          if (player2cell && p2BoardCell) {
-            player2cell.style.backgroundColor = getCellColor(
-              p2BoardCell,
-              false,
-            );
-            player2cell.style.cursor = 'default';
-          }
-        }
-      });
 
       // Attach event listener if it’s a human player’s board
       if (!isHuman) {
+        cell.addEventListener('mouseenter', () => {
+          const player2cell = document.getElementById(`p2-${x}${y}`);
+          cell.style.backgroundColor = cellColorHover;
+          cell.style.cursor = 'pointer';
+          if (player2cell) {
+            player2cell.style.backgroundColor = cellColorHover;
+            player2cell.style.cursor = 'pointer';
+          }
+        });
+
+        cell.addEventListener('mouseleave', () => {
+          const player2cell = document.getElementById(`p2-${x}${y}`);
+          if (player2cell) {
+            const p2BoardCell = player2.gameBoard.getCell(x, y);
+            cell.style.backgroundColor = getCellColor(boardCell, isHuman);
+            cell.style.cursor = 'default';
+            if (player2cell && p2BoardCell) {
+              player2cell.style.backgroundColor = getCellColor(
+                p2BoardCell,
+                false,
+              );
+              player2cell.style.cursor = 'default';
+            }
+          }
+        });
+
         cell.addEventListener('click', () => {
           const randomButton = document.getElementById('randomizeButton');
           if (randomButton) {

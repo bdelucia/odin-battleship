@@ -19,7 +19,6 @@ class Player {
     for (let i = 0; i < this.ships.length; i++) {
       if (this.ships[i].spacesTakenUp.includes(`${x},${y}`)) {
         this.ships[i].hit();
-        alert(`${this.name}'s ship was hit!`);
         return true;
       }
     }
