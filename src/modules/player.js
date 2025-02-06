@@ -1,3 +1,4 @@
+import { player1 } from './domManager.js';
 import { gameBoard } from './gameBoard.js';
 
 export function createPlayer(type, name) {
@@ -12,6 +13,17 @@ class Player {
     this.gameBoard = gameBoard();
     this.gameBoard.initializeBoard();
     this.previousMoves = new Set();
+  }
+
+  hitShipAt(x, y) {
+    for (let i = 0; i < this.ships.length; i++) {
+      if (this.ships[i].spacesTakenUp.includes(`${x},${y}`)) {
+        this.ships[i].hit();
+        alert(`${this.name}'s ship was hit!`);
+        return true;
+      }
+    }
+    return false;
   }
 
   // returns false if move has already been made at coords
@@ -34,6 +46,7 @@ class HumanPlayer extends Player {
       alert(`Already attacked at ${x},${y}`);
       return false;
     }
+    opponent.hitShipAt(x, y);
     opponent.gameBoard.receiveAttack(x, y, true);
     return true;
   }
@@ -50,6 +63,7 @@ class ComputerPlayer extends Player {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
     } while (!this.trackMove(x, y));
+    opponent.hitShipAt(x, y);
     opponent.gameBoard.receiveAttack(x, y, false);
   }
 }

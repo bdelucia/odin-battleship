@@ -38,6 +38,28 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
     }
   }
 
+  function checkIfGameWon(player1, player2) {
+    const totalHits1 = player1.ships.reduce(
+      (sum, ship) => sum + ship.timesHit,
+      0,
+    );
+    const totalHits2 = player2.ships.reduce(
+      (sum, ship) => sum + ship.timesHit,
+      0,
+    );
+    console.log(`${player1.name} total # of hits: ${totalHits1}`);
+    console.log(`${player2.name} total # of hits: ${totalHits2}`);
+    if (totalHits1 >= 2) {
+      alert(`${player2.name} has won!`);
+      return true;
+    } else if (totalHits2 >= 2) {
+      alert(`${player1.name} has won!`);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   for (let x = 0; x < boardSize; x++) {
     for (let y = 0; y < boardSize; y++) {
       const cell = document.createElement('div');
@@ -76,6 +98,10 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
       // Attach event listener if it’s a human player’s board
       if (isHuman) {
         cell.addEventListener('click', () => {
+          const randomButton = document.getElementById('randomizeButton');
+          if (randomButton) {
+            randomButton.remove();
+          }
           const moveWasValid = player1.makeMove(x, y, player2);
           renderPlayerBoard(player2, player2board, false);
 
@@ -83,6 +109,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
             setTimeout(() => {
               player2.makeMove(player1);
               renderPlayerBoard(player1, player1board, true);
+              checkIfGameWon(player1, player2);
             }, 1000);
           }
         });
