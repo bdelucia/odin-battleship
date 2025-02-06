@@ -26,15 +26,15 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
   function getCellColor(boardCell, isHuman) {
     // only display ships on the human board
     if (boardCell.hasShip && boardCell.attackMissed === null && isHuman) {
-      return 'grey';
+      return 'rgba(46, 139, 87, 1)';
     } else if (boardCell.hasShip && boardCell.attackMissed === false) {
-      return 'red';
+      return 'rgba(139, 0, 0, 0.6)';
     } else if (!boardCell.hasShip && boardCell.attackMissed === null) {
-      return 'lightblue';
+      return 'rgba(30, 144, 255, 1)';
     } else if (!boardCell.hasShip && boardCell.attackMissed === true) {
-      return 'blue';
+      return 'rgba(70, 130, 180, 1)';
     } else if (boardCell.hasShip && boardCell.attackMissed === null) {
-      return 'lightblue';
+      return 'rgba(30, 144, 255, 1)';
     }
   }
 
@@ -69,7 +69,8 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
       cell.classList.add('cell');
 
       const boardCell = player.gameBoard.getCell(x, y);
-      cell.style.backgroundColor = getCellColor(boardCell, isHuman);
+      let cellColor = getCellColor(boardCell, isHuman);
+      cell.style.backgroundColor = cellColor;
 
       cell.addEventListener('mouseenter', () => {
         const player2cell = document.getElementById(`p2-${x}${y}`);
@@ -98,22 +99,24 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
       });
 
       // Attach event listener if it’s a human player’s board
-      cell.addEventListener('click', () => {
-        const randomButton = document.getElementById('randomizeButton');
-        if (randomButton) {
-          randomButton.remove();
-        }
-        const moveWasValid = player1.makeMove(x, y, player2);
-        renderPlayerBoard(player2, player2board, false);
+      if (!isHuman) {
+        cell.addEventListener('click', () => {
+          const randomButton = document.getElementById('randomizeButton');
+          if (randomButton) {
+            randomButton.remove();
+          }
+          const moveWasValid = player1.makeMove(x, y, player2);
+          renderPlayerBoard(player2, player2board, false);
 
-        if (moveWasValid) {
-          setTimeout(() => {
-            player2.makeMove(player1);
-            renderPlayerBoard(player1, player1board, true);
-            checkIfGameWon(player1, player2);
-          }, 500);
-        }
-      });
+          if (moveWasValid) {
+            setTimeout(() => {
+              player2.makeMove(player1);
+              renderPlayerBoard(player1, player1board, true);
+              checkIfGameWon(player1, player2);
+            }, 500);
+          }
+        });
+      }
 
       boardElement.appendChild(cell);
     }
