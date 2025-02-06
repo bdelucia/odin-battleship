@@ -47,12 +47,14 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
       (sum, ship) => sum + ship.timesHit,
       0,
     );
+
     console.log(`${player1.name} total # of hits: ${totalHits1}`);
     console.log(`${player2.name} total # of hits: ${totalHits2}`);
-    if (totalHits1 >= 2) {
+    
+    if (totalHits1 >= 17) {
       alert(`${player2.name} has won!`);
       return true;
-    } else if (totalHits2 >= 2) {
+    } else if (totalHits2 >= 17) {
       alert(`${player1.name} has won!`);
       return true;
     } else {
