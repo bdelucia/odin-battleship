@@ -7,11 +7,18 @@
   </head>
   <body>
     <div id="header">Bobbleship</div>
+    <div id="titleContainer">
+      <div id="instructionsLabel">Make a move on your opponent's board to start</div>
+      <div id="settingsContainer">
+        <label for="slider">Game speed:</label>
+        <input type="range" id="slider" min="0" max="1000" value="500">
+      </div>
+    </div>
     <div id="boardsContainer">
       <div id="player1container">
         <div id="player1board"></div>
         <div id="player1nameContainer">
-          <input id="player1name" placeholder="Type your name here..."></input>
+          <input id="player1name" placeholder="Type your name here..." maxlength="75"></input>
           <button id="submitName">Submit</button>
         </div>
         <button id="randomizeButton">Randomize placement</button>

@@ -67,6 +67,7 @@ export function nameInputHandler() {
     const newPlayer1Input = document.createElement('input');
     newPlayer1Input.id = 'player1name';
     newPlayer1Input.placeholder = 'Type your name here... again...';
+    newPlayer1Input.maxLength = '75';
 
     const newSubmitBtn = document.createElement('button');
     newSubmitBtn.addEventListener('click', () => {
@@ -116,13 +117,13 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
       0,
     );
 
-    console.log(`${player1.name} total # of hits: ${totalHits1}`);
-    console.log(`${player2.name} total # of hits: ${totalHits2}`);
+    console.log(`${player1.name} total # of hits: ${totalHits2}`);
+    console.log(`${player2.name} total # of hits: ${totalHits1}`);
 
-    if (totalHits1 >= 17) {
+    if (totalHits1 >= 2) {
       alert(`${player2.name} has won!`);
       return true;
-    } else if (totalHits2 >= 17) {
+    } else if (totalHits2 >= 2) {
       alert(`${player1.name} has won!`);
       return true;
     } else {
@@ -170,10 +171,19 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
         });
 
         cell.addEventListener('click', () => {
+          const gameSpeed = parseInt(document.getElementById('slider').value);
+
           const randomButton = document.getElementById('randomizeButton');
           if (randomButton) {
             randomButton.remove();
           }
+
+          const instructionsLabel =
+            document.getElementById('instructionsLabel');
+          if (instructionsLabel && instructionsLabel.textContent !== '') {
+            instructionsLabel.textContent = '';
+          }
+
           const moveWasValid = player1.makeMove(x, y, player2);
           renderPlayerBoard(player2, player2board, false);
 
@@ -182,7 +192,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
               player2.makeMove(player1);
               renderPlayerBoard(player1, player1board, true);
               checkIfGameWon(player1, player2);
-            }, 500);
+            }, gameSpeed);
           }
         });
       }
