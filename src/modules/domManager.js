@@ -51,8 +51,10 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
         const player2cell = document.getElementById(`p2-${x}${y}`);
         cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
         cell.style.cursor = 'pointer';
-        player2cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
-        player2cell.style.cursor = 'pointer';
+        if (player2cell) {
+          player2cell.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+          player2cell.style.cursor = 'pointer';
+        }
       });
 
       cell.addEventListener('mouseleave', () => {
@@ -61,8 +63,13 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
           const p2BoardCell = player2.gameBoard.getCell(x, y);
           cell.style.backgroundColor = getCellColor(boardCell, isHuman);
           cell.style.cursor = 'default';
-          player2cell.style.backgroundColor = getCellColor(p2BoardCell, false);
-          player2cell.style.cursor = 'default';
+          if (player2cell && p2BoardCell) {
+            player2cell.style.backgroundColor = getCellColor(
+              p2BoardCell,
+              false,
+            );
+            player2cell.style.cursor = 'default';
+          }
         }
       });
 

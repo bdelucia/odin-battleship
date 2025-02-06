@@ -8,6 +8,7 @@ class Player {
   constructor(type, name) {
     this.type = type;
     this.name = name;
+    this.ships = [];
     this.gameBoard = gameBoard();
     this.gameBoard.initializeBoard();
     this.previousMoves = new Set();
