@@ -2,83 +2,99 @@ import { gameBoard } from './gameBoard.js';
 import { createPlayer } from './player.js';
 import { convertToRGBA } from './helperFunctions.js';
 import { placeShips } from './placeShips.js';
+import { endOfGame } from './gameManager.js';
 
-const player1board = document.getElementById('player1board');
-const player2board = document.getElementById('player2board');
+export const player1board = document.getElementById('player1board');
+export const player2board = document.getElementById('player2board');
 
 export const player1 = createPlayer('human', 'Player 1');
 export const player2 = createPlayer('cpu');
 
 export function domInitialize() {
+  player1board.classList.remove('disabled');
+  player2board.classList.remove('disabled');
+
+  const player1nameContainer = document.getElementById('player1nameContainer');
+
   const randomizeButton = document.getElementById('randomizeButton');
-  randomizeButton.addEventListener('click', () => {
-    player1.gameBoard.initializeBoard();
-    placeShips(player1);
-  });
+  if (randomizeButton) {
+    randomizeButton.addEventListener('click', () => {
+      player1.gameBoard.initializeBoard();
+      placeShips(player1);
+    });
+  }
+
   const nameInput = document.getElementById('player1name');
   if (nameInput) {
     nameInput.value = '';
   }
-  renderPlayerBoard(player1, player1board, true);
-  renderPlayerBoard(player2, player2board, false);
-}
 
-export function nameInputHandler() {
-  const submitBtn = document.getElementById('submitName');
-  const player1nameInput = document.getElementById('player1name');
-  const player1nameContainer = document.getElementById('player1nameContainer');
+  const submitNameBtn = document.getElementById('submitName');
+  if (submitNameBtn) {
+    submitNameBtn.addEventListener('click', () => {
+      let name = nameInput.value.trim();
+      if (name === '') {
+        player1.name = 'Player 1';
+      } else {
+        player1.name = name;
+      }
 
-  function submitBtnEventHandler(
-    submitBtn,
-    player1nameInput,
-    player1nameContainer,
-    player1,
-  ) {
-    const inputValue = player1nameInput.value.trim();
-    if (inputValue !== '') {
-      // Create label div
-      const player1nameLabel = document.createElement('div');
-      player1nameLabel.id = 'player1nameLabel';
-      player1nameLabel.textContent = inputValue;
+      nameInput.remove();
+      submitNameBtn.remove();
 
-      player1.name = inputValue;
-
-      // Remove input and button, add label
-      submitBtn.remove();
-      player1nameInput.remove();
-      player1nameContainer.appendChild(player1nameLabel);
-    }
-  }
-
-  // if user is able to type their name
-  if (submitBtn && player1nameInput && player1nameContainer) {
-    submitBtn.addEventListener('click', () => {
-      submitBtnEventHandler(
-        submitBtn,
-        player1nameInput,
-        player1nameContainer,
-        player1,
-      );
+      const nameLabel = document.createElement('div');
+      nameLabel.id = 'nameLabel';
+      nameLabel.textContent = player1.name;
+      player1nameContainer.append(nameLabel);
     });
   } else {
-    const player1nameLabel = document.getElementById('player1nameLabel');
-    player1nameLabel.remove();
+    const oldNameLabel = document.getElementById('nameLabel');
+    if (oldNameLabel) oldNameLabel.remove();
 
-    const newPlayer1Input = document.createElement('input');
-    newPlayer1Input.id = 'player1name';
-    newPlayer1Input.placeholder = 'Type your name here... again...';
-    newPlayer1Input.maxLength = '75';
+    const newNameInput = document.createElement('input');
+    newNameInput.id = 'player1name';
+    newNameInput.placeholder = 'Another game another name';
 
     const newSubmitBtn = document.createElement('button');
+    newSubmitBtn.id = 'submitName';
+    newSubmitBtn.textContent = 'Submit';
     newSubmitBtn.addEventListener('click', () => {
-      submitBtnEventHandler(
-        newSubmitBtn,
-        newPlayer1Input,
-        player1nameContainer,
-        player1,
-      );
+      const nameInput = document.getElementById('player1name');
+      let name = nameInput.value.trim();
+      if (name === '') {
+        player1.name = 'Player 1';
+      } else {
+        player1.name = name;
+      }
+
+      nameInput.remove();
+      newSubmitBtn.remove();
+
+      const nameLabel = document.createElement('div');
+      nameLabel.id = 'nameLabel';
+      nameLabel.textContent = player1.name;
+      player1nameContainer.append(nameLabel);
     });
+
+    const newRandomizeBtn = document.createElement('button');
+    const player1container = document.getElementById('player1container');
+    newRandomizeBtn.id = 'randomizeButton';
+    newRandomizeBtn.textContent = 'Randomize Placement';
+    newRandomizeBtn.addEventListener('click', () => {
+      player1.gameBoard.initializeBoard();
+      placeShips(player1);
+      player2.gameBoard.initializeBoard();
+      placeShips(player2);
+    });
+
+    player1container.append(newRandomizeBtn);
+
+    player1nameContainer.append(newNameInput);
+    player1nameContainer.append(newSubmitBtn);
   }
+
+  renderPlayerBoard(player1, player1board, true);
+  renderPlayerBoard(player2, player2board, false);
 }
 
 // renders the player's board in HTML
@@ -122,9 +138,11 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
 
     if (totalHits1 >= 2) {
       alert(`${player2.name} has won!`);
+      endOfGame(player2);
       return true;
     } else if (totalHits2 >= 2) {
       alert(`${player1.name} has won!`);
+      endOfGame(player1);
       return true;
     } else {
       return false;

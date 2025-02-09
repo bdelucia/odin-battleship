@@ -53,7 +53,7 @@ class HumanPlayer extends Player {
 
 class ComputerPlayer extends Player {
   constructor() {
-    super('computer', 'Chat Gippity');
+    super('computer', 'CPU');
   }
 
   makeMove(opponent) {
