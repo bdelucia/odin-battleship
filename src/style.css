@@ -182,6 +182,7 @@ label,
   font-weight: bold; /* Makes the text stand out */
   color: #333; /* Text color */
   background-color: #f9f9f9; /* Light background for contrast */
+  margin-top: 1rem;
 }
 
 footer,

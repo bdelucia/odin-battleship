@@ -1,6 +1,10 @@
 import { gameBoard } from './gameBoard.js';
 import { createPlayer } from './player.js';
-import { convertToRGBA } from './helperFunctions.js';
+import {
+  convertToRGBA,
+  displayPlayer1Turn,
+  displayPlayer2Turn,
+} from './helperFunctions.js';
 import { placeShips } from './placeShips.js';
 import { endOfGame } from './gameManager.js';
 
@@ -15,6 +19,7 @@ const playersTurn = document.getElementById('playersTurn');
 export function domInitialize() {
   player1board.classList.remove('disabled');
   player2board.classList.remove('disabled');
+  displayPlayer1Turn(player1.name);
 
   const player1nameContainer = document.getElementById('player1nameContainer');
 
@@ -61,7 +66,7 @@ export function domInitialize() {
         player1.name = name;
       }
 
-      playersTurn.textContent = player1.name;
+      displayPlayer1Turn(player1.name);
       nameInput.remove();
       submitNameBtn.remove();
 
@@ -90,7 +95,7 @@ export function domInitialize() {
         player1.name = name;
       }
 
-      playersTurn.textContent = player1.name;
+      displayPlayer1Turn(player1.name);
 
       nameInput.remove();
       newSubmitBtn.remove();
@@ -233,8 +238,8 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
 
           if (moveResult.isValid) {
             if (!moveResult.isHit) {
+              displayPlayer2Turn('CPU');
               setTimeout(() => {
-                playersTurn.textContent = player2.name;
                 let computerMoveResult;
                 do {
                   computerMoveResult = player2.makeMove(player1);
@@ -244,14 +249,13 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
                     break; // Exit if game is won
                   }
                 } while (computerMoveResult.isHit); // Continue computer's turn if it was a hit
+                displayPlayer1Turn(player1.name);
               }, gameSpeed);
             } else {
               // If it was a hit, check for win but don't switch turns
               checkIfGameWon(player1, player2);
             }
           }
-
-          playersTurn.textContent = player1.name;
         });
       }
 
