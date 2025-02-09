@@ -125,12 +125,14 @@ input::placeholder {
   justify-content: center;
   align-items: center;
   margin-top: 30px;
+  gap: 5px;
 }
 
 #settingsContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
 }
 
 #slider {
@@ -166,6 +168,22 @@ input::placeholder {
   opacity: 0.5;
 }
 
+label,
+#speedLabel {
+  font-size: 1rem;
+}
+
+#playersTurn {
+  display: inline-block; /* Makes the border wrap tightly around text */
+  padding: 5px 10px; /* Adds spacing inside the border */
+  border: 2px solid #333; /* Thin border with a dark color */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 16px; /* Adjust font size */
+  font-weight: bold; /* Makes the text stand out */
+  color: #333; /* Text color */
+  background-color: #f9f9f9; /* Light background for contrast */
+}
+
 footer,
 #header {
   display: flex;
@@ -178,7 +196,7 @@ footer,
 }
 
 #header {
-  font-size: 1.5rem;
+  font-size: 2rem;
   max-height: 10vh;
 }
 

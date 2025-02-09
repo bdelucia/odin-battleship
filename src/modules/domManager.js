@@ -10,11 +10,33 @@ export const player2board = document.getElementById('player2board');
 export const player1 = createPlayer('human', 'Player 1');
 export const player2 = createPlayer('cpu');
 
+const playersTurn = document.getElementById('playersTurn');
+
 export function domInitialize() {
   player1board.classList.remove('disabled');
   player2board.classList.remove('disabled');
 
   const player1nameContainer = document.getElementById('player1nameContainer');
+
+  const speedSlider = document.getElementById('slider');
+  const speedLabel = document.getElementById('speedLabel');
+
+  window.addEventListener('load', () => {
+    document.getElementById('slider').value = 500; // Reset to default value
+  });
+
+  speedSlider.addEventListener('input', () => {
+    const speed = Number(speedSlider.value);
+    let displayText = 'Normal';
+
+    if (speed === 1000) displayText = '⚡ Very Fast';
+    else if (speed >= 750) displayText = 'Fast';
+    else if (speed >= 500) displayText = 'Normal';
+    else if (speed >= 250) displayText = 'Slow';
+    else displayText = '🐢 Very Slow';
+
+    speedLabel.textContent = `Speed: ${displayText}`;
+  });
 
   const randomizeButton = document.getElementById('randomizeButton');
   if (randomizeButton) {
@@ -39,6 +61,7 @@ export function domInitialize() {
         player1.name = name;
       }
 
+      playersTurn.textContent = player1.name;
       nameInput.remove();
       submitNameBtn.remove();
 
@@ -66,6 +89,8 @@ export function domInitialize() {
       } else {
         player1.name = name;
       }
+
+      playersTurn.textContent = player1.name;
 
       nameInput.remove();
       newSubmitBtn.remove();
@@ -209,6 +234,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
           if (moveResult.isValid) {
             if (!moveResult.isHit) {
               setTimeout(() => {
+                playersTurn.textContent = player2.name;
                 let computerMoveResult;
                 do {
                   computerMoveResult = player2.makeMove(player1);
@@ -224,6 +250,8 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
               checkIfGameWon(player1, player2);
             }
           }
+
+          playersTurn.textContent = player1.name;
         });
       }
 
