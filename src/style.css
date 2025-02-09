@@ -178,5 +178,10 @@ footer,
 }
 
 #header {
+  font-size: 1.5rem;
   max-height: 10vh;
+}
+
+footer {
+  font-size: 1rem;
 }

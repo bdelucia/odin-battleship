@@ -189,7 +189,8 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
         });
 
         cell.addEventListener('click', () => {
-          const gameSpeed = parseInt(document.getElementById('slider').value);
+          const gameSpeed =
+            1000 / parseInt(document.getElementById('slider').value);
 
           const randomButton = document.getElementById('randomizeButton');
           if (randomButton) {
@@ -202,15 +203,26 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
             instructionsLabel.textContent = '';
           }
 
-          const moveWasValid = player1.makeMove(x, y, player2);
+          const moveResult = player1.makeMove(x, y, player2);
           renderPlayerBoard(player2, player2board, false);
 
-          if (moveWasValid) {
-            setTimeout(() => {
-              player2.makeMove(player1);
-              renderPlayerBoard(player1, player1board, true);
+          if (moveResult.isValid) {
+            if (!moveResult.isHit) {
+              setTimeout(() => {
+                let computerMoveResult;
+                do {
+                  computerMoveResult = player2.makeMove(player1);
+                  renderPlayerBoard(player1, player1board, true);
+
+                  if (checkIfGameWon(player1, player2)) {
+                    break; // Exit if game is won
+                  }
+                } while (computerMoveResult.isHit); // Continue computer's turn if it was a hit
+              }, gameSpeed);
+            } else {
+              // If it was a hit, check for win but don't switch turns
               checkIfGameWon(player1, player2);
-            }, gameSpeed);
+            }
           }
         });
       }

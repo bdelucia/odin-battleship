@@ -19,10 +19,10 @@ class Player {
     for (let i = 0; i < this.ships.length; i++) {
       if (this.ships[i].spacesTakenUp.includes(`${x},${y}`)) {
         this.ships[i].hit();
-        return true;
+        return true; // hit
       }
     }
-    return false;
+    return false; // miss
   }
 
   // returns false if move has already been made at coords
@@ -43,11 +43,13 @@ class HumanPlayer extends Player {
   makeMove(x, y, opponent) {
     if (!this.trackMove(x, y)) {
       alert(`Already attacked at ${x},${y}`);
-      return false;
+      return { isValid: false, isHit: false };
     }
-    opponent.hitShipAt(x, y);
+
+    const isHit = opponent.hitShipAt(x, y);
     opponent.gameBoard.receiveAttack(x, y, true);
-    return true;
+
+    return { isValid: true, isHit: isHit };
   }
 }
 
@@ -62,7 +64,14 @@ class ComputerPlayer extends Player {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
     } while (!this.trackMove(x, y));
-    opponent.hitShipAt(x, y);
+
+    const isHit = opponent.hitShipAt(x, y);
     opponent.gameBoard.receiveAttack(x, y, false);
+
+    return {
+      isValid: true,
+      isHit: isHit,
+      coordinates: { x, y },
+    };
   }
 }
