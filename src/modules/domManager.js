@@ -157,11 +157,11 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
     console.log(`${player1.name} total # of hits: ${totalHits2}`);
     console.log(`${player2.name} total # of hits: ${totalHits1}`);
 
-    if (totalHits1 >= 1) {
+    if (totalHits1 >= 17) {
       alert(`${player2.name} has won!`);
       endOfGame(player2);
       return true;
-    } else if (totalHits2 >= 1) {
+    } else if (totalHits2 >= 17) {
       alert(`${player1.name} has won!`);
       endOfGame(player1);
       return true;
