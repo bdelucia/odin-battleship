@@ -7,31 +7,33 @@
   </head>
   <body>
     <div id="header">Bobbleship</div>
-    <div id="titleContainer">
-      <div id="instructionsLabel">Make a move on your opponent's board to start</div>
-      <div id="settingsContainer">
-        <label for="speed">Game speed:</label>
-        <select name="speed" id="speed">
-          <option value="instant">Instant</option>
-          <option value="fast">Fast</option>
-          <option value="normal">Normal</option>
-          <option value="slow">Slow</option>
-        </select>
-      </div>
-      <div id="playersTurn">Player 1</div>
-    </div>
-    <div id="boardsContainer">
-      <div id="player1container">
-        <div id="player1board"></div>
-        <div id="player1nameContainer">
-          <input id="player1name" placeholder="Type your name here..." maxlength="75"></input>
-          <button id="submitName">Submit</button>
+    <div id="bodyContainer">
+      <div id="titleContainer">
+        <div id="instructionsLabel">Make a move on your opponent's board to start</div>
+        <div id="settingsContainer">
+          <label for="speed">Game speed:</label>
+          <select name="speed" id="speed">
+            <option value="instant">Instant</option>
+            <option value="fast">Fast</option>
+            <option value="normal">Normal</option>
+            <option value="slow">Slow</option>
+          </select>
         </div>
-        <button id="randomizeButton">Randomize placement</button>
+        <div id="playersTurn">Player 1</div>
       </div>
-      <div id="player2container">
-        <div id="player2board"></div>
-        <div id="player2name">CPU</div>
+      <div id="boardsContainer">
+        <div id="player1container">
+          <div id="player1board"></div>
+          <div id="player1nameContainer">
+            <input id="player1name" placeholder="Type your name here..." maxlength="75"></input>
+            <button id="submitName">Submit</button>
+          </div>
+          <button id="randomizeButton">Randomize placement</button>
+        </div>
+        <div id="player2container">
+          <div id="player2board"></div>
+          <div id="player2name">CPU</div>
+        </div>
       </div>
     </div>
     <footer>Made by Bobbeh</footer>

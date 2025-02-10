@@ -45,6 +45,7 @@ export function endOfGame(winningPlayer) {
 
   // generate random message depending on who won
   const instructionsLabel = document.getElementById('instructionsLabel');
+  instructionsLabel.classList.remove('hidden');
   instructionsLabel.textContent = getEndOfGameMsg(winningPlayer);
 
   // resets the player 1's name

@@ -22,11 +22,11 @@
 
 body {
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh; /* Changed from min-height to fixed height */
   margin: 0;
   gap: 0;
-  align-items: center;
+  overflow: hidden; /* Prevents scrolling on the body */
 }
 
 input,
@@ -101,7 +101,7 @@ select {
   -webkit-appearance: none; /* Chrome/Safari */
 
   /* Basic styles */
-  padding: 8px 12px;
+  padding: 6px 8px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -160,7 +160,17 @@ option:hover {
 #player2container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+}
+
+#bodyContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Takes full height of its grid cell */
+  justify-content: space-evenly; /* Distributes space evenly */
+  gap: 0; /* Reduced gap */
+  padding: 1rem 0; /* Reduced padding */
+  overflow: auto; /* Allows scrolling if content overflows */
 }
 
 #boardsContainer {
@@ -168,6 +178,7 @@ option:hover {
   justify-content: center;
   padding: 0px;
   gap: 50px;
+  flex-shrink: 0; /* Prevents the boards from shrinking */
 }
 
 #titleContainer {
@@ -175,8 +186,8 @@ option:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
-  gap: 5px;
+  gap: 10px;
+  /* Remove margin-top */
 }
 
 #settingsContainer {
@@ -216,7 +227,25 @@ option:hover {
 
 .disabled {
   pointer-events: none;
-  opacity: 0.5;
+}
+
+.hidden {
+  display: none;
+}
+
+#instructionsLabel {
+  padding: 12px 16px;
+  border: 2px solid var(--text-color);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.1); /* Subtle transparency */
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.3),
+    /* Soft shadow for floating effect */ 0 0 10px var(--text-color); /* Glow effect */
+  font-weight: bold;
+  color: var(--primary-color); /* Ensures readability */
+  transition: transform 0.2s ease-in-out;
+  font-style: italic;
+  font-weight: 300;
 }
 
 label,
@@ -234,6 +263,9 @@ label,
   color: #333; /* Text color */
   background-color: #f9f9f9; /* Light background for contrast */
   margin-top: 1rem;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.3),
+    /* Soft shadow for floating effect */ 0 0 10px var(--text-color); /* Glow effect */
 }
 
 footer,
@@ -249,9 +281,10 @@ footer,
 
 #header {
   font-size: 2rem;
-  max-height: 10vh;
+  height: 60px; /* Fixed height instead of max-height */
 }
 
 footer {
   font-size: 1rem;
+  height: 40px; /* Fixed height */
 }

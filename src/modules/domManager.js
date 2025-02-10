@@ -15,7 +15,6 @@ export const player2board = document.getElementById('player2board');
 export const player1 = createPlayer('human', 'Player 1');
 export const player2 = createPlayer('cpu');
 
-const playersTurn = document.getElementById('playersTurn');
 let gameSpeed = 0;
 
 export function domInitialize() {
@@ -52,10 +51,15 @@ export function domInitialize() {
       nameInput.remove();
       submitNameBtn.remove();
 
-      const nameLabel = document.createElement('div');
-      nameLabel.id = 'nameLabel';
-      nameLabel.textContent = player1.name;
-      player1nameContainer.append(nameLabel);
+      const nameLabelTest = document.getElementById('nameLabel');
+      if (!nameLabelTest) {
+        const nameLabel = document.createElement('div');
+        nameLabel.id = 'nameLabel';
+        nameLabel.textContent = player1.name;
+        player1nameContainer.append(nameLabel);
+      } else {
+        nameLabelTest.textContent = player1.name;
+      }
     });
   } else {
     const oldNameLabel = document.getElementById('nameLabel');
@@ -148,11 +152,11 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
     console.log(`${player1.name} total # of hits: ${totalHits2}`);
     console.log(`${player2.name} total # of hits: ${totalHits1}`);
 
-    if (totalHits1 >= 17) {
+    if (totalHits1 >= 1) {
       alert(`${player2.name} has won!`);
       endOfGame(player2);
       return true;
-    } else if (totalHits2 >= 17) {
+    } else if (totalHits2 >= 1) {
       alert(`${player1.name} has won!`);
       endOfGame(player1);
       return true;
@@ -162,19 +166,16 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
   }
 
   async function computerTurn(gameSpeed) {
+    player1board.classList.remove('disabled');
     let computerMoveResult;
     do {
       await delay(gameSpeed); // Wait for the specified delay
       computerMoveResult = player2.makeMove(player1);
       renderPlayerBoard(player1, player1board, true);
+    } while (computerMoveResult.isHit && !checkIfGameWon(player1, player2)); // Continue if it's a hit
 
-      if (checkIfGameWon(player1, player2)) {
-        // Game is won, handle the victory
-        displayGameWon(player2.name);
-        return; // Exit the function
-      }
-    } while (computerMoveResult.isHit); // Continue if it's a hit
-
+    player1board.classList.add('disabled');
+    player2board.classList.remove('disabled');
     // Switch back to player 1's turn
     displayPlayer1Turn(player1.name);
   }
@@ -236,6 +237,8 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
               break;
           }
 
+          document.getElementById('instructionsLabel').classList.add('hidden');
+
           const randomButton = document.getElementById('randomizeButton');
           if (randomButton) {
             randomButton.remove();
@@ -259,6 +262,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
               checkIfGameWon(player1, player2);
             }
           }
+          player2board.classList.add('disabled');
         });
       }
 
