@@ -4,6 +4,7 @@ import {
   convertToRGBA,
   displayPlayer1Turn,
   displayPlayer2Turn,
+  delay,
 } from './helperFunctions.js';
 import { placeShips } from './placeShips.js';
 import { endOfGame } from './gameManager.js';
@@ -15,6 +16,7 @@ export const player1 = createPlayer('human', 'Player 1');
 export const player2 = createPlayer('cpu');
 
 const playersTurn = document.getElementById('playersTurn');
+let gameSpeed = 0;
 
 export function domInitialize() {
   player1board.classList.remove('disabled');
@@ -22,26 +24,6 @@ export function domInitialize() {
   displayPlayer1Turn(player1.name);
 
   const player1nameContainer = document.getElementById('player1nameContainer');
-
-  const speedSlider = document.getElementById('slider');
-  const speedLabel = document.getElementById('speedLabel');
-
-  window.addEventListener('load', () => {
-    document.getElementById('slider').value = 500; // Reset to default value
-  });
-
-  speedSlider.addEventListener('input', () => {
-    const speed = Number(speedSlider.value);
-    let displayText = 'Normal';
-
-    if (speed === 1000) displayText = '⚡ Very Fast';
-    else if (speed >= 750) displayText = 'Fast';
-    else if (speed >= 500) displayText = 'Normal';
-    else if (speed >= 250) displayText = 'Slow';
-    else displayText = '🐢 Very Slow';
-
-    speedLabel.textContent = `Speed: ${displayText}`;
-  });
 
   const randomizeButton = document.getElementById('randomizeButton');
   if (randomizeButton) {
@@ -166,17 +148,35 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
     console.log(`${player1.name} total # of hits: ${totalHits2}`);
     console.log(`${player2.name} total # of hits: ${totalHits1}`);
 
-    if (totalHits1 >= 2) {
+    if (totalHits1 >= 17) {
       alert(`${player2.name} has won!`);
       endOfGame(player2);
       return true;
-    } else if (totalHits2 >= 2) {
+    } else if (totalHits2 >= 17) {
       alert(`${player1.name} has won!`);
       endOfGame(player1);
       return true;
     } else {
       return false;
     }
+  }
+
+  async function computerTurn(gameSpeed) {
+    let computerMoveResult;
+    do {
+      await delay(gameSpeed); // Wait for the specified delay
+      computerMoveResult = player2.makeMove(player1);
+      renderPlayerBoard(player1, player1board, true);
+
+      if (checkIfGameWon(player1, player2)) {
+        // Game is won, handle the victory
+        displayGameWon(player2.name);
+        return; // Exit the function
+      }
+    } while (computerMoveResult.isHit); // Continue if it's a hit
+
+    // Switch back to player 1's turn
+    displayPlayer1Turn(player1.name);
   }
 
   for (let x = 0; x < boardSize; x++) {
@@ -219,8 +219,22 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
         });
 
         cell.addEventListener('click', () => {
-          const gameSpeed =
-            1000 / parseInt(document.getElementById('slider').value);
+          const speedSelect = document.getElementById('speed');
+          let speed = speedSelect.value;
+          switch (true) {
+            case speed === 'instant':
+              gameSpeed = 0;
+              break;
+            case speed === 'fast':
+              gameSpeed = 500;
+              break;
+            case speed === 'normal':
+              gameSpeed = 1000;
+              break;
+            case speed === 'slow':
+              gameSpeed = 2000;
+              break;
+          }
 
           const randomButton = document.getElementById('randomizeButton');
           if (randomButton) {
@@ -239,18 +253,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
           if (moveResult.isValid) {
             if (!moveResult.isHit) {
               displayPlayer2Turn('CPU');
-              setTimeout(() => {
-                let computerMoveResult;
-                do {
-                  computerMoveResult = player2.makeMove(player1);
-                  renderPlayerBoard(player1, player1board, true);
-
-                  if (checkIfGameWon(player1, player2)) {
-                    break; // Exit if game is won
-                  }
-                } while (computerMoveResult.isHit); // Continue computer's turn if it was a hit
-                displayPlayer1Turn(player1.name);
-              }, gameSpeed);
+              computerTurn(gameSpeed);
             } else {
               // If it was a hit, check for win but don't switch turns
               checkIfGameWon(player1, player2);
