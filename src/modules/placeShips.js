@@ -92,7 +92,7 @@ export function placeShips(player) {
         boardCell.placeShip();
       }
     }
-    console.log(ships[i].spacesTakenUp);
+    // console.log(ships[i].spacesTakenUp);
   }
   renderPlayerBoard(player1, player1board, true);
 }

@@ -24,19 +24,31 @@ export function domInitialize() {
   displayPlayer1Turn(player1.name);
 
   const player1nameContainer = document.getElementById('player1nameContainer');
+  const optionsContainer = document.getElementById('optionsContainer');
 
+  // Theme button setup
   const themeBtn = document.getElementById('themeSwitchBtn');
   if (themeBtn) {
     themeBtn.addEventListener('click', toggleTheme);
   }
 
-  const randomizeButton = document.getElementById('randomizeButton');
-  if (randomizeButton) {
-    randomizeButton.addEventListener('click', () => {
-      player1.gameBoard.initializeBoard();
-      placeShips(player1);
-    });
+  // Remove old randomize button if it exists
+  const oldRandomizeButton = document.getElementById('randomizeButton');
+  if (oldRandomizeButton) {
+    oldRandomizeButton.remove();
   }
+
+  // Create new randomize button
+  const newRandomizeBtn = document.createElement('button');
+  newRandomizeBtn.id = 'randomizeButton';
+  newRandomizeBtn.textContent = 'Randomize Placement';
+  newRandomizeBtn.addEventListener('click', () => {
+    player1.gameBoard.initializeBoard();
+    placeShips(player1);
+    player2.gameBoard.initializeBoard();
+    placeShips(player2);
+  });
+  optionsContainer.append(newRandomizeBtn);
 
   const nameInput = document.getElementById('player1name');
   if (nameInput) {
@@ -98,19 +110,6 @@ export function domInitialize() {
       player1nameContainer.append(nameLabel);
     });
 
-    const newRandomizeBtn = document.createElement('button');
-    const player1container = document.getElementById('player1container');
-    newRandomizeBtn.id = 'randomizeButton';
-    newRandomizeBtn.textContent = 'Randomize Placement';
-    newRandomizeBtn.addEventListener('click', () => {
-      player1.gameBoard.initializeBoard();
-      placeShips(player1);
-      player2.gameBoard.initializeBoard();
-      placeShips(player2);
-    });
-
-    player1container.append(newRandomizeBtn);
-
     player1nameContainer.append(newNameInput);
     player1nameContainer.append(newSubmitBtn);
   }
@@ -158,11 +157,11 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
     console.log(`${player1.name} total # of hits: ${totalHits2}`);
     console.log(`${player2.name} total # of hits: ${totalHits1}`);
 
-    if (totalHits1 >= 17) {
+    if (totalHits1 >= 1) {
       alert(`${player2.name} has won!`);
       endOfGame(player2);
       return true;
-    } else if (totalHits2 >= 17) {
+    } else if (totalHits2 >= 1) {
       alert(`${player1.name} has won!`);
       endOfGame(player1);
       return true;

@@ -52,7 +52,7 @@ export function endOfGame(winningPlayer) {
   player1.name = 'Player 1';
 
   // displays a button to allow for successive games
-  const player1nameContainer = document.getElementById('player1container');
+  const optionsContainer = document.getElementById('optionsContainer');
   const replayBtn = document.createElement('button');
   replayBtn.id = 'replayBtn';
   replayBtn.textContent = 'Play another';
@@ -73,5 +73,5 @@ export function endOfGame(winningPlayer) {
     domInitialize();
   });
 
-  player1nameContainer.append(replayBtn);
+  optionsContainer.append(replayBtn);
 }

@@ -66,7 +66,7 @@ button,
 
 button {
   background-color: var(--secondary-color); /* React-like blue */
-  color: white;
+  color: var(--background-color);
   border: none;
   padding: 10px 16px;
   font-size: 16px;
@@ -82,6 +82,7 @@ button {
 button:hover {
   background-color: #0056b3; /* Darker blue */
   transform: translateY(-2px); /* Slight lift */
+  color: white;
 }
 
 button:active {
@@ -95,8 +96,10 @@ button:disabled {
   box-shadow: none;
 }
 
-#randomizeButton {
-  margin-right: auto;
+#randomizeButton,
+#replayBtn {
+  background-color: #6b9e6b;
+  margin-left: auto;
 }
 
 input {
@@ -134,10 +137,12 @@ select {
   /* Basic styles */
   padding: 6px 8px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--primary-color);
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--secondary-color);
   cursor: pointer;
+
+  color: var(--background-color);
 
   /* Add a custom dropdown arrow */
   background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
@@ -166,8 +171,8 @@ select:focus {
 
 option {
   padding: 8px 12px;
-  background-color: white;
-  color: #333;
+  background-color: var(--secondary-color);
+  color: var(--background-color);
   font-size: 0.8rem;
 }
 
@@ -181,17 +186,19 @@ option:hover {
   display: grid;
   grid-template-columns: repeat(1fr, 50px);
   grid-template-rows: repeat(1fr, 50px);
-  max-width: 500px;
-  max-height: 500px;
+  /* max-width: 500px; */
+  max-height: 516px;
   width: 100%;
   height: 100%;
+  border: 8px solid var(--footer-bg);
+  border-radius: 8px;
 }
 
 #player1container,
 #player2container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 8px;
 }
 
 #bodyContainer {
@@ -209,7 +216,6 @@ option:hover {
   justify-content: center;
   padding: 0px;
   gap: 50px;
-  flex-shrink: 0; /* Prevents the boards from shrinking */
 }
 
 #titleContainer {
@@ -217,7 +223,7 @@ option:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   /* Remove margin-top */
 }
 
@@ -226,11 +232,7 @@ option:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
-}
-
-#slider {
-  width: 100px;
+  gap: 10px;
 }
 
 #player1nameLabel {
@@ -296,6 +298,11 @@ label,
   border-radius: 10px; /* Rounded corners */
   font-size: 16px; /* Adjust font size */
   font-weight: bold; /* Makes the text stand out */
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000; /* Creates an outline effect */
 }
 
 footer,
