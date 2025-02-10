@@ -5,6 +5,7 @@ import {
   displayPlayer1Turn,
   displayPlayer2Turn,
   delay,
+  toggleTheme,
 } from './helperFunctions.js';
 import { placeShips } from './placeShips.js';
 import { endOfGame } from './gameManager.js';
@@ -23,6 +24,11 @@ export function domInitialize() {
   displayPlayer1Turn(player1.name);
 
   const player1nameContainer = document.getElementById('player1nameContainer');
+
+  const themeBtn = document.getElementById('themeSwitchBtn');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', toggleTheme);
+  }
 
   const randomizeButton = document.getElementById('randomizeButton');
   if (randomizeButton) {
@@ -152,11 +158,11 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
     console.log(`${player1.name} total # of hits: ${totalHits2}`);
     console.log(`${player2.name} total # of hits: ${totalHits1}`);
 
-    if (totalHits1 >= 1) {
+    if (totalHits1 >= 17) {
       alert(`${player2.name} has won!`);
       endOfGame(player2);
       return true;
-    } else if (totalHits2 >= 1) {
+    } else if (totalHits2 >= 17) {
       alert(`${player1.name} has won!`);
       endOfGame(player1);
       return true;
@@ -167,6 +173,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
 
   async function computerTurn(gameSpeed) {
     player1board.classList.remove('disabled');
+    player2board.classList.add('disabled');
     let computerMoveResult;
     do {
       await delay(gameSpeed); // Wait for the specified delay
@@ -262,7 +269,7 @@ export function renderPlayerBoard(player, boardElement, isHuman) {
               checkIfGameWon(player1, player2);
             }
           }
-          player2board.classList.add('disabled');
+          player1board.classList.remove('disabled');
         });
       }
 
