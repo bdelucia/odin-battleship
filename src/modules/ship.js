@@ -15,7 +15,7 @@ export const ship = function (length) {
     },
 
     isSunk() {
-      if (this.length - this.timesHit) this.alive = false;
+      if (this.timesHit >= this.length) this.alive = false;
       return this.alive;
     },
   };

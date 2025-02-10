@@ -1,4 +1,3 @@
-import { player1 } from './domManager.js';
 import { gameBoard } from './gameBoard.js';
 
 export function createPlayer(type, name) {
@@ -42,8 +41,12 @@ class HumanPlayer extends Player {
 
   makeMove(x, y, opponent) {
     if (!this.trackMove(x, y)) {
-      alert(`Already attacked at ${x},${y}`);
-      return { isValid: false, isHit: false };
+      // alert(`Already attacked at ${x},${y}`);
+      return {
+        isValid: false,
+        isHit: false,
+        message: `Already attacked at ${x},${y}`,
+      };
     }
 
     const isHit = opponent.hitShipAt(x, y);
@@ -58,12 +61,16 @@ class ComputerPlayer extends Player {
     super('computer', 'CPU');
   }
 
-  makeMove(opponent) {
+  makeMove(opponent, testCoordinates) {
     let x, y;
-    do {
-      x = Math.floor(Math.random() * 10);
-      y = Math.floor(Math.random() * 10);
-    } while (!this.trackMove(x, y));
+    if (testCoordinates) {
+      ({ x, y } = testCoordinates);
+    } else {
+      do {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      } while (!this.trackMove(x, y));
+    }
 
     const isHit = opponent.hitShipAt(x, y);
     opponent.gameBoard.receiveAttack(x, y, false);
