@@ -21,3 +21,5 @@
 .eslintcache
 .cspellcache
 package-lock.json
+node_modules
+dist
